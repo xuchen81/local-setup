@@ -1,0 +1,33 @@
+# docker compose -f postgres.yml up -d
+version: "3.8"
+
+services:
+  postgres-db:
+    image: postgres:latest
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - "postgres_data:/postgres"
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    ports:
+      - 8686:80
+    volumes:
+      - "pgadmin_data:/pgadmin_data"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: example@example.com
+      PGADMIN_DEFAULT_PASSWORD: password
+    depends_on:
+      - postgres-db
+
+volumes:
+  postgres_data:
+    driver: local
+  pgadmin_data:
+    driver: local
