@@ -1,5 +1,5 @@
-# docker compose -f elastic-search.yml up -d
-version: '3.9'
+# # docker compose -f elastic-search.yml up -d
+version: '3'
 
 services:
   elasticsearch:
@@ -7,22 +7,35 @@ services:
     container_name: elasticsearch
     environment:
       - node.name=elasticsearch
-      - network.host=0.0.0.0
-      - cluster.name=docker-cluster
       - discovery.type=single-node
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - ELASTIC_PASSWORD=examplepassword
+      - xpack.security.enabled=false
     ulimits:
       memlock:
         soft: -1
         hard: -1
-    ports:
-      - 9200:9200
-      - 9300:9300
     volumes:
       - esdata:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+    networks:
+      - elastic
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.7.0
+    container_name: kibana
+    environment:
+      # - ELASTICSEARCH_URL=http://localhost:9200
+      # - ELASTICSEARCH_HOSTS=http://localhost:9200
+      - node.name=kibana
+    ports:
+      - 5601:5601
+    networks:
+      - elastic
 
 volumes:
   esdata:
     driver: local
+
+networks:
+  elastic:
+    driver: bridge
