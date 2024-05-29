@@ -1,17 +1,33 @@
 # docker compose -f postgres.yml up -d
-version: "3.8"
+version: '3.8'
 
 services:
   postgres-db:
     image: postgres:latest
+    container_name: local_postgres_db
     restart: always
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=six_backend
     ports:
       - '5432:5432'
     volumes:
-      - "postgres_data:/postgres"
+      - 'postgres_data:/postgres'
+
+  # PostGIS Extension
+  postgis:
+    image: postgis/postgis:latest
+    container_name: local_postgis_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: six_backend
+    ports:
+      - '25432:5432'
+    depends_on:
+      - postgres-db
 
   pgadmin:
     image: dpage/pgadmin4:latest
@@ -19,7 +35,7 @@ services:
     ports:
       - 8686:80
     volumes:
-      - "pgadmin_data:/pgadmin_data"
+      - 'pgadmin_data:/pgadmin_data'
     environment:
       PGADMIN_DEFAULT_EMAIL: example@example.com
       PGADMIN_DEFAULT_PASSWORD: password
