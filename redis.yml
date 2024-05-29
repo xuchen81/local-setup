@@ -1,15 +1,15 @@
 # docker compose -f redis.yml up -d
-version: "3.8"
+version: '3.8'
 
 services:
   redis:
     restart: always
     container_name: redis
-    image: redis:latest
+    image: redis:7.2.5
     ports:
       - 6379:6379
     volumes:
-      - "redis_data:/redis"
+      - 'redis_data:/redis'
 
 volumes:
   redis_data:
