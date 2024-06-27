@@ -1,0 +1,15 @@
+# docker compose -f lavinmq.yml up -d
+version: '3.8'
+
+services:
+  lavinmq:
+    image: cloudamqp/lavinmq
+    container_name: lavinmq
+    ports:
+      - '5672:5672' # AMQP port
+      - '15672:15672' # Management UI
+    environment:
+      - LAVINMQ_DEFAULT_USER=admin
+      - LAVINMQ_DEFAULT_PASS=password
+    volumes:
+      - /tmp/amqp:/var/lib/lavinmq
