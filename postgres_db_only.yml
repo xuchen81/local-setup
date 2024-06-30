@@ -1,0 +1,22 @@
+# this one is intented to be used with pdAdmin desktop
+# docker compose -f postgres_db_only.yml up -d
+
+version: '3.8'
+
+services:
+  postgis-db:
+    image: postgis/postgis:latest
+    container_name: local_postgis_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: six_backend
+    ports:
+      - '25432:5432'
+    volumes:
+      - 'postgres_data:/postgres'
+
+volumes:
+  postgres_data:
+    driver: local
