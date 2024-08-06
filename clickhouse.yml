@@ -1,0 +1,26 @@
+# docker compose -f clickhouse.yml up -d
+version: '3.7'
+
+services:
+  clickhouse:
+    image: docker.io/bitnami/clickhouse:latest
+    container_name: clickhouse
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - '8123:8123'
+    volumes:
+      - clickhouse_data:/bitnami/clickhouse
+
+  clickhouse-gui:
+    image: ghcr.io/caioricciuti/ch-ui:latest
+    container_name: clickhouse-gui
+    ports:
+      - 5521:5521
+    environment:
+      - VITE_CLICKHOUSE_URL=http://analytic-db:8123
+      - VITE_CLICKHOUSE_PASS=admin
+
+volumes:
+  clickhouse_data:
+    driver: local
