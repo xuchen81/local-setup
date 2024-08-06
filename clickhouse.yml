@@ -6,7 +6,7 @@ services:
     image: docker.io/bitnami/clickhouse:latest
     container_name: clickhouse
     environment:
-      - ALLOW_EMPTY_PASSWORD=yes
+      - CLICKHOUSE_ADMIN_PASSWORD=password
     ports:
       - '8123:8123'
     volumes:
