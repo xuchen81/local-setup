@@ -7,12 +7,14 @@ services:
     container_name: clickhouse
     environment:
       - CLICKHOUSE_ADMIN_PASSWORD=password
+      - CLICKHOUSE_CONFIG_FILE=/bitnami/clickhouse/etc/conf.d/override.xml
     ports:
       - '8123:8123'
       - '9000:9000'
       - '9009:9009'
     volumes:
       - clickhouse_data:/bitnami/clickhouse
+      - ./ch_config.xml:/bitnami/clickhouse/etc/conf.d/override.xml
 
   clickhouse-gui:
     image: ghcr.io/caioricciuti/ch-ui:latest
